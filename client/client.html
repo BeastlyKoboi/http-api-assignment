@@ -1,13 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Our simple HTTP server</title>
   <link rel="stylesheet" type="text/css" href="/style.css">
-  
+
   <script>
 
+    let pageSelect; 
+    let typeSelect;
+    let sendButton;
+
+    const handleResponse = (response) => {
+      response.text().then(responseText => {
+        console.log(responseText);
+        // const contentType = response.headers.get('Content-Type');
+        // const content = document.querySelector('#content');
+        // content.appendChild(document.createElement('hr'));
+
+        // const h1 = document.createElement('h1');
+        // const p = document.createElement('p');
+        // const h2 = document.createElement('h2');
+        // const rawData = document.createElement('p');
+
+        // h2.innerText = contentType;
+        // rawData.innerText = responseText;
+
+        // if (contentType === 'text/xml') {
+        //   let parsedXML = new window.DOMParser().parseFromString(responseText, 'text/xml');
+        //   h1.innerText = parsedXML.querySelector('name').textContent;
+        //   p.innerText = parsedXML.querySelector('age').textContent;
+        // } else if (contentType === 'application/json') {
+        //   let parsedData  = JSON.parse(responseText);
+        //   h1.innerText = parsedData.name;
+        //   p.innerText = parsedData.age; 
+        // }
+
+        // content.appendChild(h1);
+        // content.appendChild(p);
+        // content.appendChild(h2);
+        // content.appendChild(rawData);
+      });
+    }
+
+    const sendFetchRequest = (url, acceptedType) => {
+      const fetchPromise = fetch(url, {
+        method: 'GET',
+        headers: {
+          'Accept': acceptedType
+        }, 
+
+      });
+
+      fetchPromise.then((response) => {
+        handleResponse(response);
+      });
+    };
+    
+    const init = () => {
+      pageSelect = document.getElementById('page');
+      typeSelect = document.getElementById('type');
+      sendButton = document.getElementById('send');
+
+      sendButton.addEventListener('click', () => {
+        sendFetchRequest(pageSelect.value, typeSelect.value);
+      });
+
+    };
+
+    window.onload = init;
   </script>
 </head>
+
 <body>
   <section id="top">
     <h3>Status Code Tests</h3>
@@ -29,4 +93,5 @@
   <section id="content">
   </section>
 </body>
+
 </html>
