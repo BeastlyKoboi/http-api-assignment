@@ -7,39 +7,63 @@
 
   <script>
 
-    let pageSelect; 
+    let pageSelect;
     let typeSelect;
     let sendButton;
+
+    const getStatus = () => {
+
+    };
 
     const handleResponse = (response) => {
       response.text().then(responseText => {
         console.log(responseText);
-        // const contentType = response.headers.get('Content-Type');
-        // const content = document.querySelector('#content');
+
+        const contentType = response.headers.get('Content-Type');
+        const content = document.querySelector('#content');
         // content.appendChild(document.createElement('hr'));
 
-        // const h1 = document.createElement('h1');
-        // const p = document.createElement('p');
-        // const h2 = document.createElement('h2');
-        // const rawData = document.createElement('p');
+        const h1 = document.createElement('h1');
+        const p = document.createElement('p');
 
-        // h2.innerText = contentType;
-        // rawData.innerText = responseText;
+        switch (response.status) {
+          case 200:
+            h1.innerText = `Success`;
+            break;
+          case 400:
+            h1.innerText = `Bad Request`;
+            break;
+          case 401:
+            h1.innerText = `Unauthorized`;
+            break;
+          case 403:
+            h1.innerText = `Forbidden`;
+            break;
+          case 404:
+            h1.innerText = `Resource Not Found`;
+            break;
+          case 500:
+            h1.innerText = `Internal Server Error`;
+            break;
+          case 501:
+            h1.innerText = `Not Implemented`;
+            break;
+          default:
+            h1.innerText = `Error code not implemented by client.`;
+            break;
+        }
 
-        // if (contentType === 'text/xml') {
-        //   let parsedXML = new window.DOMParser().parseFromString(responseText, 'text/xml');
-        //   h1.innerText = parsedXML.querySelector('name').textContent;
-        //   p.innerText = parsedXML.querySelector('age').textContent;
-        // } else if (contentType === 'application/json') {
-        //   let parsedData  = JSON.parse(responseText);
-        //   h1.innerText = parsedData.name;
-        //   p.innerText = parsedData.age; 
-        // }
+        if (contentType === 'text/xml') {
+          let parsedXML = new window.DOMParser().parseFromString(responseText, 'text/xml');
+          p.innerText = parsedXML.querySelector('message').textContent;
+        } else if (contentType === 'application/json') {
+          let parsedData = JSON.parse(responseText);
+          p.innerText = parsedData.message;
+        }
 
-        // content.appendChild(h1);
-        // content.appendChild(p);
-        // content.appendChild(h2);
-        // content.appendChild(rawData);
+        content.innerHTML = "";
+        content.appendChild(h1);
+        content.appendChild(p);
       });
     }
 
@@ -48,7 +72,7 @@
         method: 'GET',
         headers: {
           'Accept': acceptedType
-        }, 
+        },
 
       });
 
@@ -56,7 +80,7 @@
         handleResponse(response);
       });
     };
-    
+
     const init = () => {
       pageSelect = document.getElementById('page');
       typeSelect = document.getElementById('type');
