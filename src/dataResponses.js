@@ -16,13 +16,6 @@ const makeXMLString = (data) => {
   Object.keys(data).forEach((key) => {
     xmlString += `<${key}>${data[key]}</${key}>`;
   });
-  //   for (const key of keys) {
-  //     xmlString += `<${key}>${data[key]}</${key}>`;
-  //   }
-
-  // for (const key in data) {
-  //     xmlString += `<${key}>${data[key]}</${key}>`;
-  // }
 
   xmlString += '</response>';
   return xmlString;
@@ -34,8 +27,8 @@ const stringifyData = (type, data) => {
 
 const getSuccess = (request, response, type) => {
   const data = {};
-
   const dataType = validateDataType(type);
+
   data.message = 'This is a successful response';
   const content = stringifyData(dataType, data);
 
@@ -44,8 +37,8 @@ const getSuccess = (request, response, type) => {
 const getBadRequest = (request, response, type, query) => {
   const statusCode = query.valid === 'true' ? 200 : 400;
   const data = {};
-
   const dataType = validateDataType(type);
+
   if (query.valid === 'true') { data.message = 'The request has the required parameters'; } else {
     data.message = 'Missing valid query parameter set to true';
     data.id = 'badRequest';
@@ -57,8 +50,8 @@ const getBadRequest = (request, response, type, query) => {
 const getUnauthorized = (request, response, type, query) => {
   const statusCode = query.loggedIn === 'true' ? 200 : 401;
   const data = {};
-
   const dataType = validateDataType(type);
+
   if (query.loggedIn === 'true') { data.message = 'You have successfully viewed the content'; } else {
     data.message = 'Missing loggedIn query parameter set to yes';
     data.id = 'unauthorized';
@@ -69,8 +62,8 @@ const getUnauthorized = (request, response, type, query) => {
 };
 const getForbidden = (request, response, type) => {
   const data = {};
-
   const dataType = validateDataType(type);
+
   data.message = 'Missing valid query parameter set to true';
   data.id = 'forbidden';
   const content = stringifyData(dataType, data);
@@ -79,8 +72,8 @@ const getForbidden = (request, response, type) => {
 };
 const getInternalServerError = (request, response, type) => {
   const data = {};
-
   const dataType = validateDataType(type);
+
   data.message = 'Internal Servor Error. Something went wrong.';
   data.id = 'internalError';
   const content = stringifyData(dataType, data);
@@ -89,8 +82,8 @@ const getInternalServerError = (request, response, type) => {
 };
 const getNotImplemented = (request, response, type) => {
   const data = {};
-
   const dataType = validateDataType(type);
+
   data.message = 'A get request for this page has not been implemented yet. Check again later for updated content.';
   data.id = 'notImplemented';
   const content = stringifyData(dataType, data);
@@ -99,8 +92,8 @@ const getNotImplemented = (request, response, type) => {
 };
 const getNotFound = (request, response, type) => {
   const data = {};
-
   const dataType = validateDataType(type);
+
   data.message = 'The page you are looking for was not found.';
   data.id = 'notFound';
   const content = stringifyData(dataType, data);
